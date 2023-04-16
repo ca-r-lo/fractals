@@ -2,7 +2,8 @@ var wid = window.innerWidth-50;
 var hit = window.innerHeight-100;
 var q = null;
 var state = true;
-
+interval = null;
+var element,canvas,width,height,red;
 
 function draw() {
     var a = document.getElementById("canvas");
@@ -12,13 +13,7 @@ function draw() {
   }
 
 
-
-
-
-
-
 $(window).load(function(){
-    var element,canvas,width,height,red;
     black = {r: 0,g: 0,b: 0,a: 255};
     // init canvas
     element = $('#canvas').get(0);
@@ -39,24 +34,32 @@ $(window).load(function(){
 
     // drawPixels();
     $.drawPix = function(){
-        for (let i = 0; i < hit; i++) {
-            if (state == true) {
-                setTimeout(function() {
-                    for (let j = 0; j < wid; j++) {
-                        setPixel(j,i,black);
-                    }
-                }, 5);
-            } 
-        }
+        var i = 0;
+        interval = setInterval(function () {
+            for (let j = 0; j < wid; j++) {
+                setPixel(j,i,black);
+            }
+            console.log(i++);  
+            if(i>hit) clearInterval(interval);
+        }, 1);
     }
 }); 
 
 
-function stop(){
-    state = false;
-}
-
 function clicked(){
     $.drawPix();
 }
+
+function stop(){
+    clearInterval(interval);
+}
+
+function reset(){
+    canvas.fillRect(0, 0, width, height);
+    console.log("reset");
+}
+
+
+
+
 draw();
