@@ -4,6 +4,8 @@ var q = null;
 var state = true;
 interval = null;
 var element,canvas,width,height,red;
+currentFractal = null;
+
 
 function draw() {
     var a = document.getElementById("canvas");
@@ -33,21 +35,16 @@ $(window).load(function(){
     }
 
     // drawPixels();
-    $.drawPix = function(){
-        var i = 0;
-        interval = setInterval(function () {
-            for (let j = 0; j < wid; j++) {
-                setPixel(j,i,black);
-            }
-            console.log(i++);  
-            if(i>hit) clearInterval(interval);
-        }, 1);
+    
+    $.setBlack = function(x,y){
+        setPixel(x,y,black)
     }
 }); 
 
 
 function clicked(){
-    $.drawPix();
+    // $.drawPix();
+    if(currentFractal == 3) mandelbrot();
 }
 
 function stop(){
@@ -58,6 +55,56 @@ function reset(){
     canvas.fillRect(0, 0, width, height);
     console.log("reset");
 }
+
+function indexName(index){
+    if (index==0)return "Fractal Generation";
+    if (index==1)return "Sierpinski Carpet";
+    if (index==2)return "Sierpinski Gasket";
+    if (index==3)return "Mandelbrot Set";
+    if (index==4)return "Julia Set";
+    if (index==5)return "Newton Fractal";
+    if (index==6)return "Koch Snowflake";
+    if (index==7)return "Harter-Heighway Dragon Curve";
+    
+}
+
+
+function showDropInfo() {
+    var sT = dropForm.dropSelect;
+    var pF = document.getElementById('pF');
+    pF.innerHTML = indexName(sT.selectedIndex);
+    currentFractal = sT.selectedIndex;
+}
+
+function scale (number, inMin, inMax, outMin, outMax) {
+    return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
+function squareComplexNumbers(re,im){
+    aa = (re*re)-(im*im);
+    bb = 2*re*im;
+    return [aa,bb];
+}
+
+console.log(squareComplexNumbers(.0984,.431));
+
+function mandelbrot(){
+    console.log("mandelbrot set")
+    width = wid;
+    height = hit;
+    var i = 0;
+    interval = setInterval(function () {
+        for (let j = 0; j < wid; j++) {
+            // setPixel(j,i,black);
+            $.setBlack(j,i);
+        }
+        console.log(i++);  
+        if(i>hit) clearInterval(interval);
+    }, 1);
+    
+}
+
+
 
 
 
