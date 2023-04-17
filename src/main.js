@@ -36,8 +36,8 @@ $(window).load(function(){
 
     // drawPixels();
     
-    $.setBlack = function(x,y){
-        setPixel(x,y,black)
+    $.setColor = function(x,y,col){
+        setPixel(x,y,col)
     }
 }); 
 
@@ -52,6 +52,7 @@ function stop(){
 }
 
 function reset(){
+    clearInterval(interval);
     canvas.fillRect(0, 0, width, height);
     console.log("reset");
 }
@@ -86,19 +87,79 @@ function squareComplexNumbers(re,im){
     return [aa,bb];
 }
 
-console.log(squareComplexNumbers(.0984,.431));
+function addComplex(re1,im1,re2,im2){
+    return [(re1+re2),(im1+im2)]
+}
+
+console.log(addComplex(.05,.21,.60,1.3));
+
+
+
 
 function mandelbrot(){
     console.log("mandelbrot set")
     width = wid;
     height = hit;
+    maxIter = 500;
     var i = 0;
     interval = setInterval(function () {
         for (let j = 0; j < wid; j++) {
             // setPixel(j,i,black);
-            $.setBlack(j,i);
+            // $.setBlack(j,i);
+            re = scale(j,0,width,-2.5,1.5);
+            im = scale(i,0,height,-1,1);
+            // console.log(j,i);
+            // console.log(re,im);
+            n=0;
+            cre = re;
+            cim = im;
+            while(n<maxIter){
+                num = squareComplexNumbers(re,im);
+
+                re = num[0] + cre;
+                im = num[1] + cim;
+
+                if((re+im)>16)break;
+
+                n++;
+            }
+            color = null;
+            bright = 0;
+            if(n==maxIter){
+                color = {r: 0,g: 0,b: 0,a: 255};
+                $.setColor(j,i,color);
+            }else{
+
+                p = n%16;
+                mapping = [
+                    {r: 66,g: 30,b: 15,a: 255},
+                    {r: 25,g: 7,b: 26,a: 255},
+                    {r: 9,g: 1,b: 47,a: 255},
+                    {r: 4,g: 4,b: 73,a: 255},
+                    {r: 0,g: 7,b: 100,a: 255},
+                    {r: 12,g: 44,b: 138,a: 255},
+                    {r: 24,g: 82,b: 177,a: 255},
+                    {r: 57,g: 125,b: 209,a: 255},
+                    {r: 134,g: 181,b: 229,a: 255},
+                    {r: 211,g: 236,b: 248,a: 255},
+                    {r: 241,g: 233,b: 191,a: 255},
+                    {r: 248,g: 201,b: 95,a: 255},
+                    {r: 255,g: 170,b: 0,a: 255},
+                    {r: 204,g: 128,b: 0,a: 255},
+                    {r: 153,g: 87,b: 0,a: 255},
+                    {r: 106,g: 52,b: 3,a: 255}
+                ]
+                color = mapping[p];
+                // console.log(color);
+
+                // bright = scale(n,0,maxIter,0,255);
+
+                // color = {r: bright,g: bright,b: bright,a: 255}
+                $.setColor(j,i,color);
+            }
+            
         }
-        console.log(i++);  
+        i++;
         if(i>hit) clearInterval(interval);
     }, 1);
     
