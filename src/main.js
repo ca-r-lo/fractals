@@ -45,6 +45,7 @@ $(window).load(function(){
 function clicked(){
     // $.drawPix();
     if(currentFractal == 3) mandelbrot();
+    if(currentFractal == 4) julia();
 }
 
 function stop(){
@@ -77,25 +78,16 @@ function showDropInfo() {
     currentFractal = sT.selectedIndex;
 }
 
-function scale (number, inMin, inMax, outMin, outMax) {
-    return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-}
 
+// ----------------------------------------------------- mandelbrot ------------------------------------------------
+function scale (number, inMin, inMax, outMin, outMax) {return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;}
 function squareComplexNumbers(re,im){
     aa = (re*re)-(im*im);
     bb = 2*re*im;
     return [aa,bb];
 }
-
-function addComplex(re1,im1,re2,im2){
-    return [(re1+re2),(im1+im2)]
-}
-
-console.log(addComplex(.05,.21,.60,1.3));
-
-
-
-
+function addComplex(re1,im1,re2,im2){return [(re1+re2),(im1+im2)]}
+function transColor(r,g,b){return {r: r,g: g,b: b,a: 255};}
 function mandelbrot(){
     console.log("mandelbrot set")
     width = wid;
@@ -104,68 +96,87 @@ function mandelbrot(){
     var i = 0;
     interval = setInterval(function () {
         for (let j = 0; j < wid; j++) {
-            // setPixel(j,i,black);
-            // $.setBlack(j,i);
             re = scale(j,0,width,-2.5,1.5);
             im = scale(i,0,height,-1,1);
-            // console.log(j,i);
-            // console.log(re,im);
             n=0;
             cre = re;
             cim = im;
+            nSmooth=0;
             while(n<maxIter){
                 num = squareComplexNumbers(re,im);
-
                 re = num[0] + cre;
                 im = num[1] + cim;
-
-                if((re+im)>16)break;
-
+                nSmooth =  n + 1 - Math.log(Math.log2(Math.abs(re + im)));
+                if(Math.abs(re+im)>200)break;
                 n++;
             }
+            hue = scale(n,0,maxIter,0,255);
             color = null;
             bright = 0;
             if(n==maxIter){
                 color = {r: 0,g: 0,b: 0,a: 255};
                 $.setColor(j,i,color);
             }else{
-
-                p = n%16;
-                mapping = [
-                    {r: 66,g: 30,b: 15,a: 255},
-                    {r: 25,g: 7,b: 26,a: 255},
-                    {r: 9,g: 1,b: 47,a: 255},
-                    {r: 4,g: 4,b: 73,a: 255},
-                    {r: 0,g: 7,b: 100,a: 255},
-                    {r: 12,g: 44,b: 138,a: 255},
-                    {r: 24,g: 82,b: 177,a: 255},
-                    {r: 57,g: 125,b: 209,a: 255},
-                    {r: 134,g: 181,b: 229,a: 255},
-                    {r: 211,g: 236,b: 248,a: 255},
-                    {r: 241,g: 233,b: 191,a: 255},
-                    {r: 248,g: 201,b: 95,a: 255},
-                    {r: 255,g: 170,b: 0,a: 255},
-                    {r: 204,g: 128,b: 0,a: 255},
-                    {r: 153,g: 87,b: 0,a: 255},
-                    {r: 106,g: 52,b: 3,a: 255}
-                ]
-                color = mapping[p];
-                // console.log(color);
-
-                // bright = scale(n,0,maxIter,0,255);
-
-                // color = {r: bright,g: bright,b: bright,a: 255}
-                $.setColor(j,i,color);
+                grade = scale(n,0,maxIter,0,1);
+                bright = scale(Math.sqrt(grade),0,1,0,255)
+                $.setColor(j,i,{r: 0,g: bright,b: 0,a: 255});
             }
-            
         }
         i++;
         if(i>hit) clearInterval(interval);
     }, 1);
-    
 }
+// ------------------------------------------------ mandelbrot ------------------------------------------------------------
 
 
+
+
+function julia(){ 
+    console.log("mandelbrot set")
+    width = wid;
+    height = hit;
+    maxIter = 500;
+    i=0
+    interval = setInterval(function () {
+        for (let j = 0; j < wid; j++) {
+            // $.setColor(j,i,black);
+
+            re = scale(j,0,width,-2.5,1.5);
+            im = scale(i,0,height,-1,1);
+
+            n=0;
+
+            cre = .397;
+            cim = -0.356;
+            
+            while(n<maxIter){
+                num = squareComplexNumbers(re,im);
+                re = num[0] + cre;
+                im = num[1] + cim;
+
+                if(Math.abs(re+im)>200)break;
+
+                n++;
+            }
+            
+            hue = scale(n,0,maxIter,0,255);
+            color = null;
+            bright = 0;
+            if(n==maxIter){
+                color = {r: 0,g: 0,b: 0,a: 255};
+                $.setColor(j,i,color);
+            }else{
+                grade = scale(n,0,maxIter,0,1);
+                bright = scale(Math.sqrt(grade),0,1,0,255)
+                $.setColor(j,i,{r: 0,g: bright,b: 0,a: 255});
+            }
+
+
+        }
+        i++;
+        if(i>hit) clearInterval(interval);
+    }, 1);
+}
 
 
 
