@@ -2,25 +2,37 @@ canvas {
     margin: 0 1em;
     border: 1px solid #dddddd;
 }
-p {
-    text-align: center;
-   line-height: 0px;
-   
-}
-#butt{
-  margin-left: 1em;
+
+body{
+    
+    font-family: system-ui, sans-serif;
 }
 
-#dropform{
-  margin-left: 1em;
+#butt1{
+    
+    margin-left: 16px;
 }
 
-#pF{
+#xframe{
+    margin-left: 16px;
+    margin-bottom: 5px;
+
+}
+#yframe{
+    margin-left: 16px;
+
+}
+#contain1{
+    margin-left: 16px;
+    margin-bottom: 10px;
+}
+#frac1{
+    margin-left: 55.5%;
 }
 
-#div1{
+#con2{
+    margin-top: 5px;
 }
 
-/* #container{
-  margin:1em;
-} */
+
+
