@@ -1,40 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>frctls</title>
     <link rel="stylesheet" href="style.css">
-    <title>Fractals</title>
 </head>
 <body>
-  
-
-  <div id="container">
-    <form name="dropForm" id="dropform">
-      <select name="dropSelect" onchange="showDropInfo()">
-         <option value="P">Select Fractal:</option>
-         <option value="A">Sierpinski Carpet</option>
-         <option value="B">Sierpinski Gasket</option>
-         <option value="C">Mandelbrot Set</option>
-         <option value="D">Julia Set</option>
-         <option value="E">Newton Fractal</option>
-         <option value="F">Koch Snowflake</option>
-         <option value="G">Harter-Heighway Dragon Curve</option>
-      </select>
-    </form>
-  </div>
-  <div id="div1">
-    <p id="pF">Fractal Generation</p>
-  </div>
-  
-  <canvas id='canvas' width='500' height='500'></canvas>
-  <button type="button" id="butt" onclick="clicked()">Generate</button>
-  <button type="button" id="butt2" onclick="stop()">Stop</button>
-  <button type="button" id="butt3" onclick="reset()">Reset</button>
-
+    <div style="text-align: center;" id="label">Fractals</div>
+    <canvas id='canvas' width='500' height='500'></canvas>
+    <div id="contain1">
+        <div id="mj">
+            <div >
+                <label id="lb2">x :</label>
+                <input type="number" id="xframe" name="xframe"><br>
+                <label id="lb1">y :</label>
+                <input type="number" id="yframe" name="yframe"><br>
+            </div>
+        </div>
+        <div id="gd">
+            <label id="lb3">Interations :</label>
+            <label id="iterNum">0</label>
+            <input type="range" min="1" max="10" value="1" class="slider" id="iterations">
+            <input type="range" min="1" max="20" value="1" class="slider" id="iterationsDragon">
+            <label id="recursion">Recursions: </label>
+            <label id="recurNum">0</label>
+        </div>
+        <div id="time">
+            <label id="exeT">Execution Time:</label>
+            <label id="exec">0</label>
+        </div>
+    </div>
+    <button id="butt1" type="button">Generate</button>
+    <button id="butt2" type="button">Stop</button>
+    <button id="butt3" type="button">Reset</button>
     
-
+    <button id="frac1" type="button">Mandelbrot Set</button>
+    <button id="frac2" type="button">Julia Set</button>
+    <button id="frac3" type="button">Sierpinski Gasket</button>
+    <button id="frac4" type="button">Dragon Curve</button>
     
-   
-    <script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.js'></script>
-    <script type='text/javascript' src="C:\Users\hilom\Desktop\project\Fractals\src\main.js"></script>
+    <script type='text/javascript' src="main.js"></script>
 </body>
 </html>
